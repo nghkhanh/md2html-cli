@@ -1,18 +1,26 @@
 use clap::Parser;
 use std::path::PathBuf;
 use std::fs;
+use std::error::Error;
 
-fn main() {
+
+fn main() -> Result<(), Box<dyn Error>> {
     let args = CliArgs::parse();
 
-    println!("Parsed arguments: {:?}", args);
-    println!("Input file path: {:?}", args.input_path);
-    println!("Output file path: {:?}", args.output_path);
+    let md_content = fs::read_to_string(&args.input_path)?;
 
-    let md_content = fs::read_to_string(&args.input_path)
-        .expect("Failed to read the input file.");
-    
-    println!("\n--- File content ---\n{}", md_content);
+    let html_output = parse_md(&md_content);
+
+    fs::write(&args.output_path, html_output)?;
+
+    println!("Successfully converted {:?} to {:?}.", args.input_path, args.output_path);
+
+    Ok(())
+}
+
+
+fn parse_md(content: &str) -> String {
+    content.to_string()
 }
 
 
