@@ -2,6 +2,7 @@ use clap::Parser;
 use std::path::PathBuf;
 use std::fs;
 use std::error::Error;
+mod parser;
 
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -9,7 +10,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     let md_content = fs::read_to_string(&args.input_path)?;
 
-    let html_output = parse_md(&md_content);
+    let html_output = parser::parse(&md_content);
 
     fs::write(&args.output_path, html_output)?;
 
@@ -19,9 +20,9 @@ fn main() -> Result<(), Box<dyn Error>> {
 }
 
 
-fn parse_md(content: &str) -> String {
-    content.to_string()
-}
+// fn parse_md(content: &str) -> String {
+//     content.to_string()
+// }
 
 
 #[derive(Parser, Debug)]
