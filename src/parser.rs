@@ -25,6 +25,29 @@ fn parse_inline_elements(line: &str) -> String {
         }
     }
     italic_process
+
+// // [toilaai](toilaai.com)
+//     let mut link_process = String::new();
+//     let mut current_state = &italic_process[..];
+
+//     while let Some(start_point) = current_state.find('[') {
+//         if let Some(end_point) = current_state[start_point..].final(']') {
+//             let link = start_point + end_point;
+
+//             if current_state.get(link..link + 2) == Some("](") {
+//                 let url_start = link + 2;
+//                 if let Some(url_end) = current_state[url_start..].find(')') {
+//                     let url = url_start + url_end;
+
+//                     link_process.push_str(&current_state[..start_point]);
+//                     let link_text = &current_state[start_point + 1..url]
+//                     let url_final = &current_state[url_start..url]
+
+//                     link_process.push_str(&format!("<a href=\"{}\">{}</a>"), url_final, link_text)
+//                 }
+//             }
+//         }
+//     }
 }
 // xin chao **viet nam**, toi *yeu* viet nam
 
@@ -46,7 +69,7 @@ pub fn parse(markdown_input: &str) -> String {
         else if line.starts_with("# "){
             let raw_content = line.strip_prefix("# ").unwrap();
             let processed_content = parse_inline_elements(raw_content);
-            let h1_tag = format!("<h1>{}</h1>\n", processed_content);
+            let h1_tag = format!("<h1> {}</h1>\n", processed_content);
 
             html_output.push_str(&h1_tag);
         }
@@ -60,4 +83,28 @@ pub fn parse(markdown_input: &str) -> String {
     }
 
     html_output
+}
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_parse_h1() {
+        let md_input = "# Hello";
+
+        let expected = "<h1> Hello</h1>\n";
+
+        assert_eq!(parse(md_input), expected);
+    }
+
+    #[test]
+    fn test_parse_para() {
+        let md_input = "Day la vi du";
+
+        let expected = "<p>Day la vi du</p>\n";
+
+        assert_eq!(parse(md_input), expected);
+    }
 }
