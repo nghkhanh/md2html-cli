@@ -1,6 +1,33 @@
 fn parse_inline_elements(line: &str) -> String {
-    line.to_string()
+    let mut process_line = String::with_capacity(line.len());
+    for (index, segment) in line.split("**").enumerate() {
+        if index % 2 == 1 { //chia dong theo **, neu index la so le thi no nam ngoai **, con neu so chan thi no nam trong **
+            if !segment.is_empty() {
+                process_line.push_str("<strong>");
+                process_line.push_str(segment);
+                process_line.push_str("</strong>");
+            }
+        } else {
+            process_line.push_str(segment);
+        }
+    }
+
+    let mut italic_process = String::with_capacity(process_line.len());
+    for (index, segment) in process_line.split("*").enumerate() {
+        if index % 2 == 1 {
+            if !segment.is_empty() {
+                italic_process.push_str("<em>");
+                italic_process.push_str(segment);
+                italic_process.push_str("</em>");
+            }
+        } else {
+            italic_process.push_str(segment);
+        }
+    }
+    italic_process
 }
+// xin chao **viet nam**, toi *yeu* viet nam
+
 
 pub fn parse(markdown_input: &str) -> String {
 
